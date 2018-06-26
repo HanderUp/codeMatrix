@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>黑客帝国矩形阵</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<style>
+			@font-face{
+				font-family:'calligraffittiregular';
+				src:url("fonts/calligraffitti-regular-webfont.ttf")
+			}
+			
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			body {
+				overflow: hidden;
+			}
+			
+			#content{
+				position: absolute;
+				color: white;
+				top: 30%;
+				left: 50%;
+				margin-left: -121px;
+			}
+			
+			p{
+				font-family: calligraffittiregular
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="content">
+			<p style="font-size:  40px;font-weight: 1000;">Hello World</p>
+		</div>
+		<canvas id="hacker" style="width:100%;height:100%;">请使用最新的浏览器</canvas>
+	</body>
+
+</html>
+<script type="text/javascript">
+	window.onload = function() {
+		var color_array = ['#00FF00','#00FF99','#00FFCC','#00FFFF','#00BBFF','#0066FF','#0000FF','#5500FF','#7700FF','#9900FF','#CC00FF','#FF00FF'];
+		var i=0;
+		var color;
+		function changColor() {
+			color = color_array[i];
+			console.log(i++);
+			console.log(color);
+			if(i>color_array.length-1){
+				i=0;
+			}
+			setTimeout(changColor, 2000);
+		}
+	
+		var hacker = document.getElementById("hacker");
+		var width = hacker.width = screen.width;
+		var height = hacker.height = screen.height;
+		var ctx = hacker.getContext('2d');
+		var num = Math.ceil(width / 12);
+		var y = Array(num).join(0).split('');
+		var draw = function() {
+			ctx.fillStyle = 'rgba(0,0,0,.05)';
+			ctx.fillRect(0, 0, width, height);
+			ctx.fillStyle = color;
+			ctx.font = '12px Microsoft YaHei';
+			y.map(function(y1,i){
+				var text = String.fromCharCode(65 + Math.random() * 62);
+				var x = i * 12;  
+				var y1 = y[i];
+				ctx.fillText(text, x, y1);
+				y[i] = ( y1 > Math.random() * 10 * height ? 0 : parseInt(y[i]) + 12 );
+			})
+		}
+
+		Run();
+
+		function Run() {
+			changColor();
+			Game_Interval = setInterval(draw, 50);
+		}
+		
+		//获取随机颜色，三种方法
+		/*function color1(){
+			var colors=[0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'];
+			var color="";
+			for( var i=0; i<6; i++){
+				//Math.random()产生一个0-1之间的小数
+				var n=Math.ceil(Math.random()*15);
+				color += "" + colors[n];
+				// console.log(color);
+			}
+			return '#'+color;
+		}
+
+		function color2(){
+			var color = Math.ceil(Math.random()*16777215).toString(16); 
+			while(color.length<6){
+				color = '0'+color;
+			}
+			return '#'+color;
+		}
+
+		function color3(){
+			return "#" + (function(color){
+				return new Array(7-color.length).join("0")+color;
+				//神奇的方法，总共字符串有6位，如果只产生了3位，则前面应该补三个0，在长度为7-3=4的空数组中利用join插入0，则为['',0,'',0,'',0,''],刚好三个0补在前面
+			})((Math.random()*0x1000000 << 0).toString(16))
+			// << 0 也是一种取整的方法
+		}*/
+		
+	}
+</script>
